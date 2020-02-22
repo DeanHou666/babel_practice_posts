@@ -1,8 +1,9 @@
 class UI {
   constructor() {
-    this.titleInput=document.querySelector('#title')
-    this.bodyInput=document.querySelector('#body')
-    this.idInput=document.querySelector('#id')
+    this.titleInput = document.querySelector('#title')
+    this.bodyInput = document.querySelector('#body')
+    this.idInput = document.querySelector('#id')
+    this.postSubmit = document.querySelector('.post-submit')
   }
   showPosts(posts) {
     let output = ''
@@ -39,23 +40,49 @@ class UI {
       this.clearAlert()
     }, 2000);
   }
-  clearAlert(){
+  clearIdInput(){
+    this.idInput.value='';
+  }
+  clearAlert() {
     const currentAlert = document.querySelector('.alert')
-    if(currentAlert){
+    if (currentAlert) {
       currentAlert.remove();
     }
   }
-  clearFields(){
-    this.titleInput.value=''
-    this.bodyInput.value=''
+  clearFields() {
+    this.titleInput.value = ''
+    this.bodyInput.value = ''
   }
 
-  fillForm(data){
-    this.titleInput.value=data.title
-    this.bodyInput.value=data.body
+  fillForm(data) {
+    this.titleInput.value = data.title
+    this.bodyInput.value = data.body
     this.idInput.value = data.id
+    this.changeState('edit')
   }
-  
+
+  changeState(type) {
+    if (type === 'edit') {
+      this.postSubmit.textContent = 'update Post'
+      this.postSubmit.className='post-update btn btn-warning btn-block'
+      const button= document.createElement('button');
+      button.appendChild(document.createTextNode('cancel post'))
+      button.className='btn btn-alert post-cancel'
+      const postCard = document.querySelector('.card-form')
+      const formEnd=document.querySelector('#form-end')
+      postCard.insertBefore(button,formEnd)
+    }else{
+      this.postSubmit.textContent='add Post'
+      this.postSubmit.className="post-submit btn btn-primary btn-block"
+      if(document.querySelector('.post-cancel')){
+        document.querySelector('.post-cancel').remove()
+      }
+      this.clearIdInput()
+      this.clearFields()
+    }
+  }
+
+
 }
 
 export const ui = new UI()

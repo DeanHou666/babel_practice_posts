@@ -5,12 +5,12 @@ import { http } from './http'
 document.addEventListener('DOMContentLoaded',getPosts)
 document.querySelector('.post-submit').addEventListener('click',submitPost)
 document.querySelector('#posts').addEventListener('click',editPost);
+document.querySelector('.card-form').addEventListener('click',cancelEdit)
 //get posts
 
 function getPosts(){
   http.get('http://localhost:3000/posts').then(data =>{
     ui.showPosts(data)
-    ui.showAlert('post is getted','alert alert-success')
   }).catch(err =>console.log(err))
 }
 
@@ -25,10 +25,18 @@ function submitPost(){
       title,
       body
     }
-    http.post(`http://localhost:3000/posts/${id}`,data)
-    getPosts()
-    ui.showAlert('a  new post is added ','alert alert-success')
-    ui.clearFields()
+    if(id === ''){
+      http.post(`http://localhost:3000/posts/${id}`,data)
+      getPosts()
+      ui.showAlert('a  new post is added ','alert alert-success')
+      ui.clearFields()
+    }else{
+      http.put(`http://localhost:3000/posts/${id}`,data)
+      getPosts()
+      ui.showAlert('post has been updated ','alert alert-warning')
+      ui.changeState('anthing')
+    }
+  
   }
 
 }
@@ -44,5 +52,12 @@ function editPost(e){
       id
     }
     ui.fillForm(data)
+  }
+}
+
+function cancelEdit(e){
+  if(e.target.classList.contains('post-cancel')){
+    e.target.remove()
+    ui.changeState('post')
   }
 }
