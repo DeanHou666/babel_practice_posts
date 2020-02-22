@@ -1,13 +1,10 @@
 import { ui } from './ui'
 import { http } from './http'
 
-const titleInput = document.querySelector('#title').value;
-const bodyInput = document.querySelector('#body').value;
-const idInput = document.querySelector('#id').value;
 //event listener
 document.addEventListener('DOMContentLoaded',getPosts)
 document.querySelector('.post-submit').addEventListener('click',submitPost)
-
+document.querySelector('#posts').addEventListener('click',editPost);
 //get posts
 
 function getPosts(){
@@ -31,7 +28,21 @@ function submitPost(){
     http.post(`http://localhost:3000/posts/${id}`,data)
     getPosts()
     ui.showAlert('a  new post is added ','alert alert-success')
-    ui.clearFields();
+    ui.clearFields()
   }
 
+}
+
+function editPost(e){
+  if(e.target.parentElement.classList.contains('edit')){
+    const body = e.target.parentElement.previousElementSibling.textContent
+    const title = e.target.parentElement.previousElementSibling.previousElementSibling.textContent
+    const id = e.target.parentElement.dataset.id;
+    const data ={
+      title,
+      body,
+      id
+    }
+    ui.fillForm(data)
+  }
 }
