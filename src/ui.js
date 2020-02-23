@@ -22,8 +22,8 @@ class UI {
         </div>
       </div>
       `
-      document.getElementById('posts').innerHTML = output
-    });
+    })
+    document.getElementById('posts').innerHTML = output
   }
 
   showAlert(msg, msgclass) {

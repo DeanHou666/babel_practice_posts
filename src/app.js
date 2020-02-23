@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded',getPosts)
 document.querySelector('.post-submit').addEventListener('click',submitPost)
 document.querySelector('#posts').addEventListener('click',editPost);
 document.querySelector('.card-form').addEventListener('click',cancelEdit)
+document.querySelector('#posts').addEventListener('click',deletePost)
 //get posts
 
 function getPosts(){
@@ -60,4 +61,33 @@ function cancelEdit(e){
     e.target.remove()
     ui.changeState('post')
   }
+}
+
+// function deletePost(e){
+//   e.preventDefault()
+//   if(e.target.parentElement.classList.contains('delete')){
+//     if(confirm('sure to delete')){
+//       const id = e.target.parentElement.dataset.id
+//       http.delete(`http://localhost:3000/posts/${id}`).then(() =>{
+//         getPosts()
+//         ui.showAlert('post removed','alert alert-success')
+       
+//       }).catch(err =>console.log(err))
+//     }
+//   }
+// }
+function deletePost(e){
+  e.preventDefault();
+  if(e.target.parentElement.classList.contains('delete')){
+    const id = e.target.parentElement.dataset.id;
+    if(confirm('sure to delete')){
+      http.delete(`http://localhost:3000/posts/${id}`)
+      .then(data =>{
+        ui.showAlert('post removed','alert alert-success')
+        getPosts();
+      })
+      .catch(err => console.log(err))
+    }
+  }
+
 }
